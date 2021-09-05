@@ -2,42 +2,44 @@ import React from 'react'
 import { navData } from '../../constants/data';
 import { Box, Typography, makeStyles } from '@material-ui/core'
 
-const useStyle = makeStyles({
+const useStyle = makeStyles(theme => ({
     component: {
-        display:'flex',
+        display: 'flex',
+        justifyContent: 'space-between',
         margin: '55px 130px 0 130px',
-        justifyContent: 'space-between'
+        overflowX: 'overlay',
+        [theme.breakpoints.down('md')]: {
+            margin: 0
+        }
     },
     container: {
-        textAlign: 'center',
-        padding: '12px 8px'
+        padding: '12px 8px',
+        textAlign: 'center'
     },
     image: {
-        width: 66
+        width: 64
     },
     text: {
         fontSize: 14,
-        fontWeight: 600
+        fontWeight: 600,
+        fontFamily: 'inherit'
     }
-})
+}));
 
-function Navbar() {
+const NavBar = () => {
     const classes = useStyle();
     return (
-        <div>
-            <Box className ={classes.component}>
-                {
-                    navData.map(data => (
-                        <Box className={classes.container}>
-                        <img src = {data.url}  className={classes.image}/>
-                <Typography className={classes.text}>{data.text}</Typography>
-                </Box>
-                    ))
-                }
-                
-            </Box>
-        </div>
+        <Box className={classes.component}>
+            {
+                navData.map(temp => (
+                    <Box className={classes.container}>
+                        <img src={temp.url} className={classes.image} />
+                        <Typography className={classes.text}>{temp.text}</Typography>
+                    </Box>
+                ))
+            }
+        </Box>
     )
 }
 
-export default Navbar
+export default NavBar;

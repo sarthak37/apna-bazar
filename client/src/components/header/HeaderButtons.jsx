@@ -1,7 +1,10 @@
-import React from 'react'
-import { Box,Button, makeStyles, Typography, Badge } from '@material-ui/core'
+import React, { useContext, useState } from 'react'
+import { Box,Button, makeStyles, Typography, Badge, Dialog } from '@material-ui/core'
 import { ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import LoginDialog from '../login/Login';
+import { LoginContext } from '../../context/ContextProvider';
+import Profile from './Profile';
 
 const useStyle = makeStyles({
     login: {
@@ -28,21 +31,31 @@ const useStyle = makeStyles({
         display: 'flex'
     }
 })
-function HeaderButtons() {
+const HeaderButtons = () => {
     const classes = useStyle();
+    const [ open, setOpen ] = useState(false);
+    const {account , setAccount} = useContext(LoginContext)
+
+    const openLoginDialog = () => {
+        setOpen(true);
+    }
     return (
-        <div>
             <Box className={classes.wrapper}>
-                <Link><Button variant="contained" className={classes.login}>Login</Button></Link>
-                <Link><Typography style = {{marginTop: 5}}>More</Typography></Link>
-                <Link to='/' className={classes.container}>
+                {
+                     account ? <Profile account = {account} setAccount = {setAccount} /> :
+                     <Link>
+                     <Button variant="contained" onClick={() => openLoginDialog()} className={classes.login}>Login</Button>
+                     </Link>
+                }
+                <Link><Typography style = {{marginTop: 2}}>More</Typography></Link>
+                <Link to='/cart' className={classes.container}>
                 <Badge badgeContent={4} color="secondary">
-  <ShoppingCart />
-</Badge>
-                    <Typography style={{marginLeft: 10}}>Cart</Typography>
+                    <ShoppingCart />
+                    </Badge>
+                    <Typography style={{marginLeft: 4}}>Cart</Typography>
                 </Link>
+                <LoginDialog open={open} setOpen={setOpen} setAccount={setAccount} />
             </Box>
-        </div>
     )
 }
 
